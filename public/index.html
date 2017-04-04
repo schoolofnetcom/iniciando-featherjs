@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Welcome to Feathers</title>
+    <style>
+    </style>
+  </head>
+  <body>
+    <form action="">
+      <input type="text" name="text" id="text" placeholder="Type your message here">
+      <button type="button" id="btn_send">Send message</button>
+    </form>
+    <script src="//npmcdn.com/feathers-client@^1.1.0/dist/feathers.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script>
+      var socket = io()
+      var app = feathers()
+
+      app.configure(feathers.socketio(socket))
+
+      var messages = app.service('messages')
+
+      messages.on('created', function(data) {
+        console.log('A new message has been created', data)
+      })
+
+      var btnSend = document.getElementById('btn_send')
+      var txt = document.getElementById('text')
+
+      btnSend.addEventListener('click', function(e) {
+        messages.create({ text: txt.value })
+      })
+
+    </script>
+  </body>
+</html>
